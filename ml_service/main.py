@@ -38,7 +38,8 @@ class StockRequest(BaseModel):
 
 # --- Routes ---
 
-@app.get("/")
+# Allow both GET (for browsers) and HEAD (for health checks)
+@app.api_route("/", methods=["GET", "HEAD"])
 def read_root():
     return {"status": "Server is running", "message": "Welcome to Stock Vision API"}
 
@@ -47,7 +48,7 @@ async def get_prediction(request: StockRequest):
     if not request.stock_name:
         raise HTTPException(status_code=400, detail="Stock name is required")
 
-    print(f"🔮 Predicting for: {request.stock_name}")
+    print(f"Predicting for: {request.stock_name}")
 
     # Call the function inside your model_logic.py file
     # This assumes model_logic.py handles the loading and prediction internally

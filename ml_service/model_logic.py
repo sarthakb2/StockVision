@@ -324,7 +324,7 @@ def get_stock_prediction(ticker: str):
         optimizer = optim.Adam(model.parameters(), lr=0.01)
         
         model.train()
-        epochs = 15 # Reduced epochs for speed on free tier
+        epochs = 50 # Reduced epochs for speed on free tier
         for epoch in range(epochs):
             optimizer.zero_grad()
             outputs = model(X_train)
