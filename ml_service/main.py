@@ -1,7 +1,8 @@
 import os
 
-# 🛑 FORCE CPU ONLY - CRITICAL FOR RENDER
+# FORCE CPU ONLY - CRITICAL FOR RENDER
 # This must be the very first line to prevent "CUDA Error: failed call to cuInit"
+# comment this when running locally with GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 from fastapi import FastAPI, HTTPException
