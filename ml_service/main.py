@@ -6,6 +6,10 @@ import model_logic
 
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"status": "Server is running", "message": "Welcome to Stock Vision API"}
+
 # --- Configure CORS ---
 origins = [
     "http://localhost:3000", # React
