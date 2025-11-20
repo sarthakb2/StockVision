@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+env/
+.env
+
+# Models (Don't push these to GitHub, they are too big)
+saved_models/
+*.pth
+*.h5
+*.keras
+*.pt
+
+# OS junk
+.DS_Store
