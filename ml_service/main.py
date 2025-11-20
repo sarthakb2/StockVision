@@ -1,6 +1,12 @@
+import os
+
+# 🛑 FORCE CPU ONLY - Stop looking for a GPU entirely
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 
 import torch
 
