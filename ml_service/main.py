@@ -10,7 +10,8 @@ app = FastAPI()
 origins = [
     "http://localhost:3000", # React
     "http://localhost:5000", # Node/Express
-    "http://localhost:8080", # Allow all for testing
+    "http://localhost:8080",
+    "https://stock-vision-sage.vercel.app",
 ]
 
 app.add_middleware(
