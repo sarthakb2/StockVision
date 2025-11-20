@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { API_BASE_URL } from "../api"; // Import at the top
+
 import {
   LineChart,
   Line,
@@ -9,12 +11,12 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { 
-  Search, 
-  TrendingUp, 
-  Loader2, 
-  AlertCircle, 
-  Activity 
+import {
+  Search,
+  TrendingUp,
+  Loader2,
+  AlertCircle,
+  Activity,
 } from "lucide-react";
 
 // --- Types ---
@@ -50,7 +52,8 @@ const Visions: React.FC = () => {
     setResult(null);
 
     try {
-      const response = await fetch("http://localhost:8000/predict", {
+      // ... inside handlePrediction ...
+      const response = await fetch(`${API_BASE_URL}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stock_name: stockName.toUpperCase() }),
@@ -59,7 +62,9 @@ const Visions: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok || data.error) {
-        throw new Error(data.error || data.detail || "Failed to get prediction");
+        throw new Error(
+          data.error || data.detail || "Failed to get prediction"
+        );
       }
 
       setResult(data);
@@ -77,7 +82,9 @@ const Visions: React.FC = () => {
       }
     } catch (err: any) {
       console.error("Prediction Error:", err);
-      setError(err.message || "An error occurred while connecting to the server.");
+      setError(
+        err.message || "An error occurred while connecting to the server."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +93,6 @@ const Visions: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="w-full max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
-        
         {/* Header Section */}
         <div className="bg-gradient-to-r from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 text-center border-b border-gray-100 dark:border-gray-800">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 flex items-center justify-center gap-3">
@@ -100,7 +106,10 @@ const Visions: React.FC = () => {
 
         <div className="p-8">
           {/* Input Form */}
-          <form onSubmit={handlePrediction} className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+          <form
+            onSubmit={handlePrediction}
+            className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
+          >
             <div className="relative flex-1 max-w-md">
               <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
               <input
@@ -145,15 +154,18 @@ const Visions: React.FC = () => {
               <div className="h-12 w-12 mx-auto mb-4 text-blue-600">
                 <Loader2 className="h-full w-full animate-spin" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">Crunching numbers...</h3>
-              <p className="text-gray-500">Downloading market data and training AI model.</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                Crunching numbers...
+              </h3>
+              <p className="text-gray-500">
+                Downloading market data and training AI model.
+              </p>
             </div>
           )}
 
           {/* Results Section */}
           {result && (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-              
               {/* Info Card */}
               <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-600 p-6 rounded-r-lg">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -165,7 +177,10 @@ const Visions: React.FC = () => {
                 <div className="flex items-center gap-2 text-blue-700 dark:text-blue-400">
                   <TrendingUp className="h-5 w-5" />
                   <span className="font-medium text-lg">
-                    Predicted Next Close: <span className="font-bold text-2xl ml-1">${result.final_predicted_price.toFixed(2)}</span>
+                    Predicted Next Close:{" "}
+                    <span className="font-bold text-2xl ml-1">
+                      ${result.final_predicted_price.toFixed(2)}
+                    </span>
                   </span>
                 </div>
               </div>
@@ -173,17 +188,26 @@ const Visions: React.FC = () => {
               {/* Chart Section */}
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                 <div className="flex items-center justify-between mb-6 px-2">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Actual vs AI Predicted Price</h3>
-                  <span className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">60 Day History + Forecast</span>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Actual vs AI Predicted Price
+                  </h3>
+                  <span className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
+                    60 Day History + Forecast
+                  </span>
                 </div>
-                
+
                 <div className="h-[400px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
                       data={chartData}
                       margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                     >
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" opacity={0.5} />
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        vertical={false}
+                        stroke="#E5E7EB"
+                        opacity={0.5}
+                      />
                       <XAxis
                         dataKey="date"
                         tick={{ fontSize: 12, fill: "#6B7280" }}
@@ -206,12 +230,16 @@ const Visions: React.FC = () => {
                           borderRadius: "8px",
                           border: "1px solid #E5E7EB",
                           boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                          color: "#111827"
+                          color: "#111827",
                         }}
                         itemStyle={{ fontSize: "12px", fontWeight: "500" }}
                         labelStyle={{ color: "#6B7280", marginBottom: "4px" }}
                       />
-                      <Legend verticalAlign="top" height={36} iconType="circle" />
+                      <Legend
+                        verticalAlign="top"
+                        height={36}
+                        iconType="circle"
+                      />
                       <Line
                         type="monotone"
                         dataKey="Actual"

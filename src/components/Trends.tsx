@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Loader2, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 
 // --- INLINE UI COMPONENTS ---
 const Card = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => (
@@ -57,7 +58,7 @@ const Trends: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:8000/dashboard');
+        const response = await fetch(`${API_BASE_URL}/dashboard`);
         if (!response.ok) throw new Error("Failed to fetch data");
         const data = await response.json();
         
